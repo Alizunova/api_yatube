@@ -14,33 +14,53 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    text = models.TextField()
+    text = models.TextField(max_length=30)
     pub_date = models.DateTimeField(
         'Дата публикации', auto_now_add=True
     )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts'
+        User,
+        on_delete=models.CASCADE,
+
     )
     image = models.ImageField(
-        upload_to='posts/', null=True, blank=True
-    )  # поле для картинки
+        upload_to='posts/',
+        null=True,
+        blank=True
+    )
+
     group = models.ForeignKey(
-        Group, on_delete=models.SET_NULL,
-        related_name='posts', blank=True, null=True
+        Group,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
     )
 
     def __str__(self):
         return self.text
 
+    class Meta:
+        default_related_name = "posts"
+
 
 class Comment(models.Model):
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='comments'
+        User,
+        on_delete=models.CASCADE,
     )
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='comments'
+        Post,
+        on_delete=models.CASCADE,
     )
-    text = models.TextField()
+    text = models.TextField(max_length=30)
     created = models.DateTimeField(
-        'Дата добавления', auto_now_add=True, db_index=True
+        'Дата добавления',
+        auto_now_add=True,
+        db_index=True
     )
+
+    def __str__(self):
+        return f"Комментарий от {self.author} к посту {self.post}"
+
+    class Meta:
+        default_related_name = "comments"
