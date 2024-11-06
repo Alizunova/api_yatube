@@ -36,11 +36,11 @@ class Post(models.Model):
         null=True
     )
 
-    def __str__(self):
-        return self.text
-
     class Meta:
         default_related_name = "posts"
+
+    def __str__(self):
+        return self.text
 
 
 class Comment(models.Model):
@@ -59,8 +59,8 @@ class Comment(models.Model):
         db_index=True
     )
 
-    def __str__(self):
-        return f"Комментарий от {self.author} к посту {self.post}"
-
     class Meta:
         default_related_name = "comments"
+
+    def __str__(self):
+        return f"Комментарий от {self.author} к посту {self.post}"
